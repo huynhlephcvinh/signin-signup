@@ -4,10 +4,11 @@ import com.becoder.model.UserDtls;
 
 
 public interface UserService {
-    public UserDtls createUser(UserDtls user);
+    public UserDtls createUser(UserDtls user,String url);
 
     public boolean checkEmail(String email);
 
     public void removeSessionMessage();
     public void sendEmail(UserDtls user, String path);
+    public boolean verifyAccount(String verificationCode);
 }

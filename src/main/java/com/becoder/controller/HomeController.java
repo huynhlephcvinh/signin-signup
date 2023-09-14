@@ -3,8 +3,10 @@ package com.becoder.controller;
 import com.becoder.model.UserDtls;
 import com.becoder.repository.UserRepository;
 import com.becoder.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,14 +48,17 @@ public class HomeController {
     }
 
     @PostMapping("/createUser")
-    public String createuser(@ModelAttribute UserDtls user, HttpSession session) {
-
+    public String createuser(@ModelAttribute UserDtls user, HttpSession session, HttpServletRequest request) {
+        String url = request.getRequestURL().toString();
+        http://localhost:8080/saveUser
+        url = url.replace(request.getServletPath(), "");
         boolean f = userService.checkEmail(user.getEmail());
 
         if (f) {
             session.setAttribute("msg", "Email Id alreday exists");
         } else {
-            UserDtls userDtls = userService.createUser(user);
+
+            UserDtls userDtls = userService.createUser(user,url);
             if (userDtls != null) {
                 session.setAttribute("msg", "Register Sucessfully");
             } else {
@@ -62,6 +67,18 @@ public class HomeController {
         }
 
         return "redirect:/register";
+    }
+    @GetMapping("/verify")
+    public String verifyAccount(@Param("code") String code, Model m) {
+        boolean f = userService.verifyAccount(code);
+
+        if (f) {
+            m.addAttribute("msg", "Sucessfully your account is verified");
+        } else {
+            m.addAttribute("msg", "may be your vefication code is incorrect or already veified ");
+        }
+
+        return "message";
     }
 
 }
