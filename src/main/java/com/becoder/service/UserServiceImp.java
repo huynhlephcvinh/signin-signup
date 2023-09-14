@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.UUID;
+
 @Service
 public class UserServiceImp implements UserService {
     @Autowired
@@ -21,7 +23,10 @@ public class UserServiceImp implements UserService {
        String password = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(password);
         user.setRole("ROLE_USER");
-        return userRepo.save(user);
+        user.setEnable(false);
+        user.setVerificationCode(UUID.randomUUID().toString());
+        UserDtls newuser = userRepo.save(user);
+        return newuser;
     }
 
     @Override

@@ -9,4 +9,5 @@ public interface UserService {
     public boolean checkEmail(String email);
 
     public void removeSessionMessage();
+    public void sendEmail(UserDtls user, String path);
 }

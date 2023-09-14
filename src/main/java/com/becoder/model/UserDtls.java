@@ -24,4 +24,8 @@ public class UserDtls {
     private String password;
 
     private String role;
+
+    private boolean enable;
+
+    private String verificationCode;
 }
