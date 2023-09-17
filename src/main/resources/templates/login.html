@@ -21,8 +21,10 @@
                         <p class="text-center text-success fs-5">Logout Sucessfully</p>
                     </th:block>
 
+                    <h4><a href="/oauth2/authorization/google">Login with Google</a></h4>
+
                     <div class="card-body">
-                        <form action="userLogin" method="post">
+                        <form action="signin" method="post">
 
                             <div class="mb-3">
                                 <label>Enter Email</label> <input type="text" name="username"
@@ -31,8 +33,8 @@
 
 
                             <div class="mb-3">
-                                <label>Enter Password</label> <input type="text"
-                                                                     name="password" class="form-control">
+                                <label>Enter Password</label> <input type="password"
+                                                                     name="password"  class="form-control">
                             </div>
                             <button class="btn btn-primary col-md-12">Login</button>
                         </form>

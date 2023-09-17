@@ -1,5 +1,6 @@
 package com.becoder.service;
 
+import com.becoder.model.AuthenticationProvider;
 import com.becoder.model.UserDtls;
 import com.becoder.repository.UserRepository;
 import jakarta.mail.internet.MimeMessage;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.Base64;
 import java.util.UUID;
 
 @Service
@@ -36,6 +38,11 @@ public class UserServiceImp implements UserService {
             sendEmail(newuser, url);
         }
         return newuser;
+    }
+
+    @Override
+    public UserDtls getUserByEmail(String email) {
+        return userRepo.findByEmail(email);
     }
 
     @Override
@@ -104,4 +111,21 @@ public class UserServiceImp implements UserService {
         }
 
     }
+
+    public void createUserAfterOAuthLoginSuccess(String email,String name, AuthenticationProvider provider) {
+        UserDtls user = new UserDtls();
+        user.setEmail(email);
+        user.setFullName(name);
+        user.setAuthProvider(provider);
+        user.setEnable(true);
+        user.setRole("ROLE_USER");
+        userRepo.save(user);
+    }
+    public void updateUserAfterOAuthLoginSuccess(UserDtls user ,String name) {
+        user.setFullName(name);
+        user.setAuthProvider(AuthenticationProvider.GOOGLE);
+
+       userRepo.save(user);
+    }
+
 }
