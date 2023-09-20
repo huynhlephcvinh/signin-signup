@@ -10,6 +10,7 @@ public interface UserRepository extends JpaRepository<UserDtls, Integer> {
     public UserDtls findByEmail(String email);
 
     public UserDtls findByVerificationCode(String code);
+    public UserDtls findByResetPasswordToken(String token);
 
 
 }

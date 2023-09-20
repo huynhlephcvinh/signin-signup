@@ -13,6 +13,9 @@ public interface UserService {
     public void removeSessionMessage();
     public void sendEmail(UserDtls user, String path);
     public boolean verifyAccount(String verificationCode);
-    public void createUserAfterOAuthLoginSuccess(String email,String name, AuthenticationProvider provider);
-    public void updateUserAfterOAuthLoginSuccess(UserDtls user ,String name);
+    public void updateResetPasswordToken(String token, String email) throws UserDtlsNotFoundException;
+    public UserDtls getByResetPasswordToken(String token);
+    public void updatePassword(UserDtls user, String newPassword);
+    public UserDtls createUserAfterOAuthLoginSuccess(String email,String name, AuthenticationProvider provider);
+    public UserDtls updateUserAfterOAuthLoginSuccess(UserDtls user ,String name);
 }

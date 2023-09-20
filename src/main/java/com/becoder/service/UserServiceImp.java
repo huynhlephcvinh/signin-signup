@@ -112,20 +112,42 @@ public class UserServiceImp implements UserService {
 
     }
 
-    public void createUserAfterOAuthLoginSuccess(String email,String name, AuthenticationProvider provider) {
+    public void updateResetPasswordToken(String token, String email) throws UserDtlsNotFoundException {
+        UserDtls customer = userRepo.findByEmail(email);
+        if (customer != null) {
+            customer.setResetPasswordToken(token);
+            userRepo.save(customer);
+        } else {
+            throw new UserDtlsNotFoundException("Could not find any customer with the email " + email);
+        }
+    }
+
+    public UserDtls getByResetPasswordToken(String token) {
+        return userRepo.findByResetPasswordToken(token);
+    }
+
+    public void updatePassword(UserDtls user, String newPassword) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        user.setPassword(encodedPassword);
+        user.setResetPasswordToken(null);
+        userRepo.save(user);
+    }
+
+    public UserDtls createUserAfterOAuthLoginSuccess(String email,String name, AuthenticationProvider provider) {
         UserDtls user = new UserDtls();
         user.setEmail(email);
         user.setFullName(name);
         user.setAuthProvider(provider);
         user.setEnable(true);
         user.setRole("ROLE_USER");
-        userRepo.save(user);
+        return userRepo.save(user);
     }
-    public void updateUserAfterOAuthLoginSuccess(UserDtls user ,String name) {
+    public UserDtls updateUserAfterOAuthLoginSuccess(UserDtls user ,String name) {
         user.setFullName(name);
         user.setAuthProvider(AuthenticationProvider.GOOGLE);
 
-       userRepo.save(user);
+      return userRepo.save(user);
     }
 
 }

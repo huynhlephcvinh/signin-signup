@@ -37,11 +37,20 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         System.out.println("name: " + name);
         UserDtls user = userService.getUserByEmail(email);
         if(user == null){
-            userService.createUserAfterOAuthLoginSuccess(email,name,AuthenticationProvider.GOOGLE);
-              response.sendRedirect("/user/profile");
+            UserDtls user1 = userService.createUserAfterOAuthLoginSuccess(email,name,AuthenticationProvider.GOOGLE);
+            if(user1.getRole().contains("ROLE_USER")) {
+                response.sendRedirect("/user/profile");
+            }else {
+                response.sendRedirect("/admin/profile");
+            }
         }else {
-            userService.updateUserAfterOAuthLoginSuccess(user,name);
-            response.sendRedirect("/user/profile");
+            UserDtls user1 = userService.updateUserAfterOAuthLoginSuccess(user,name);
+
+            if(user1.getRole().contains("ROLE_USER")) {
+                response.sendRedirect("/user/profile");
+            }else {
+                response.sendRedirect("/admin/profile");
+            }
         }
         super.onAuthenticationSuccess(request, response, authentication);
     }

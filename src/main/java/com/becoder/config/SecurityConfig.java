@@ -44,11 +44,11 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
    {
        http.csrf().disable()
-                .authorizeHttpRequests().requestMatchers("/","/register","/signin","/createUser","/oauth/**","/verify").permitAll()
-                .requestMatchers("/user/**").authenticated().and()
+                .authorizeHttpRequests().requestMatchers("/","/register","/signin","/createUser","/oauth/**","/verify","/forgot_password","/reset_password").permitAll()
+                .requestMatchers("/user/**","/admin/**").authenticated().and()
                 .formLogin().loginPage("/signin")
                 .usernameParameter("username").passwordParameter("password")
-               .defaultSuccessUrl("/user/profile").permitAll().and()
+               .successHandler(sucessHandler).permitAll().and()
                .oauth2Login()
                .loginPage("/signin")
                .userInfoEndpoint()
